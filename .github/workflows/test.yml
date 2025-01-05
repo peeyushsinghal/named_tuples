@@ -24,6 +24,10 @@ jobs:
             pip install pytest
             pip install Faker
             pip install -r requirements.txt
+      
+      - name: Debug Output
+        run: echo "Test Session 8 Results: ${{ steps.test_session8.outputs.result }}"
+
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
