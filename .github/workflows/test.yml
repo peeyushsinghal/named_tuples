@@ -36,17 +36,15 @@ jobs:
         with:
           timeout: 10
           max-score: 250
-          test-command: |
-            pytest test_named_tuple_profile.py -v
-      
+          test-command: pytest test_named_tuple_profile.py -v
+
       - name: Run Profile Tests Dictionary
         id: test_profiles_dictionary
         uses: classroom-resources/autograding-python-grader@v1
         with:
           timeout: 10
           max-score: 250
-          test-command: |
-            pytest test_dictionary_profile.py -v
+          test-command: pytest test_dictionary_profile.py -v
 
       - name: Run Company Tests
         id: test_company
@@ -54,19 +52,20 @@ jobs:
         with:
           timeout: 10
           max-score: 250
-          test-command: |
-            pytest test_company.py -v
+          test-command: pytest test_company.py -v
+
+      - name: Run Compare Dictionary and Named Tuple Tests
+        id: test_compare_dictionary_named_tuple
+        uses: classroom-resources/autograding-python-grader@v1
+        with:
+          timeout: 10
+          max-score: 0
+          test-command: python compare_dictionary_named_tuple.py
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
           TEST_PROFILES_NAMED_TUPLE_RESULTS: "${{ steps.test_profiles_named_tuple.outputs.result }}"
           TEST_PROFILES_DICTIONARY_RESULTS: "${{ steps.test_profiles_dictionary.outputs.result }}"
-          TEST_COMPANY_RESULTS: "${{ steps.test_company.outputs.result }}" 
-
-      - name: Run Compare Dictionary and Named Tuple Tests
-        id: test_compare_dictionary_named_tuple
-        uses: classroom-resources/autograding-python-grader@v1
-        with:
-          test-command: |
-            python compare_dictionary_named_tuple.py
+          TEST_COMPANY_RESULTS: "${{ steps.test_company.outputs.result }}"
+          TEST_COMPARE_RESULTS: "${{ steps.test_compare_dictionary_named_tuple.outputs.result }}"
