@@ -21,11 +21,17 @@ jobs:
           timeout: 10
           max-score: 1000
           
+      - name: Decode and Calculate Total Score
+        id: calculate_total_score
+        run: |
+          RESULTS=$(echo '${{ steps.test_session8.outputs.result }}' | base64 --decode)
+          TOTAL_SCORE=$(echo $RESULTS | jq -r '[.tests[].score] | add | ceil')
+          echo "TEST_SESSION8_RESULTS=$TOTAL_SCORE" >> $GITHUB_ENV
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
-          TEST_SESSION8_RESULTS: "${{ steps.test_session8.outputs.result }}"
+          TEST_SESSION8_RESULTS: "${{ env.TEST_SESSION8_RESULTS }}"
         with:
           runners: test_session8
         
