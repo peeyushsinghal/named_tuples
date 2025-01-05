@@ -14,28 +14,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: test_company
-        id: test_company
+      - name: test_session8
+        id: test_session8
         uses: classroom-resources/autograding-python-grader@v1
         with:
           timeout: 10
-          max-score: 500
+          max-score: 1000
           setup-command: |
             pip install pytest
             pip install Faker
             pip install -r requirements.txt
 
-
-      # - name: Autograding Reporter
-      #   uses: classroom-resources/autograding-grading-reporter@v1
-      #   env:
-      #     TEST_COMPANY_RESULTS: "${{ steps.test_company.outputs.result }}"
-      
-      - name: Decode and assert python-test
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ github.token || 'act' }}
-          script: |
-            // Decode the Base64 output
-            const decodedResult = Buffer.from("${{ steps.test_company.outputs.result }}", 'base64').toString('utf8');
-            console.log(`Decoded Result: ${decodedResult}`);
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST_SESSION8_RESULTS: "${{ steps.test_session8.outputs.result }}"
