@@ -8,11 +8,15 @@ permissions:
   contents: read
 jobs:
   run-autograding-tests:
-    runs-on: 'ubuntu-latest,windows-latest,macos-latest'
-    if: github.actor != 'github-classroom[bot]'
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
 
       - name: test_session8
         id: test_session8
@@ -36,6 +40,3 @@ jobs:
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
           TEST_SESSION8_RESULTS: "${{ env.TEST_SESSION8_RESULTS }}"
-
-
-
