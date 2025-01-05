@@ -9,47 +9,23 @@ permissions:
 jobs:
   run-autograding-tests:
     runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10'
 
       - name: test_session8
         id: test_session8
         uses: classroom-resources/autograding-python-grader@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           timeout: 10
           max-score: 1000
-          setup-command: |
-            pip install pytest
-            pip install Faker
-            pip install -r requirements.txt
-      
-      - name: Decode and Calculate Total Score
-        id: calculate_total_score
-        run: |
-          RESULTS=$(echo '${{ steps.test_session8.outputs.result }}' | base64 --decode)
-          TOTAL_SCORE=$(echo $RESULTS | jq -r '[.tests[].score] | add | ceil')
-          echo "TEST_SESSION8_RESULTS=$TOTAL_SCORE" >> $GITHUB_ENV
+          
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          runners: test_session8
         env:
-          TEST_SESSION8_RESULTS: "${{ env.TEST_SESSION8_RESULTS }}"
-
-      - name: Report Results
-        uses: classroom-resources/autograding-grading-reporter@v1
+          TEST_SESSION8_RESULTS: "${{ steps.test_session8.outputs.result }}"
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           runners: test_session8
-        env:
-          TEST_SESSION8_RESULTS: ${{ env.TEST_SESSION8_RESULTS }}
-    
+        
