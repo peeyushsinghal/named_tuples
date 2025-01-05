@@ -1,4 +1,4 @@
-name: Named Tuple and Dictionary
+name: Run Tests
 
 on: [push, pull_request]
 
@@ -26,8 +26,8 @@ jobs:
       - name: Run tests with autograding
         uses: classroom-resources/autograding-python-grader@v1
         with:
-          test_files: |
-            test_company.py:500
-            test_dictironary_profile.py:250
-            test_named_tuple_profile.py:250
-          total_score: 1000  # Total possible score
+          setup-command: |
+            pytest test_company.py -v:500
+            pytest test_dictironary_profile.py -v:250
+            pytest test_named_tuple_profile.py -v:250
+          max-score: 1000  # Total possible score
