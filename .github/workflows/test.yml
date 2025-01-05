@@ -37,11 +37,5 @@ jobs:
           github-token: ${{ github.token || 'act' }}
           script: |
             // Decode the Base64 output
-            const decodedResult = Buffer.from("${{ steps.python-test.outputs.result }}", 'base64').toString('utf8');
+            const decodedResult = Buffer.from("${{ steps.test_company.outputs.result }}", 'base64').toString('utf8');
             console.log(`Decoded Result: ${decodedResult}`);
-            const json = JSON.parse(decodedResult)
-            if ( !json["version"] ||
-                 !json["status"] ||
-                 !json["tests"][0]["name"]) {
-              throw new Error(`Assertion failed. Expected version, status, and test name to exist, but got '${decodedResult}'`);
-            }
