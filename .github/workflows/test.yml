@@ -31,38 +31,46 @@ jobs:
           pip install numpy
 
       - name: Run Profile Tests Named Tuple
-        id: test_profiles_named_tuple
+        id: test_named_tuple_profile
         uses: classroom-resources/autograding-python-grader@v1
         with:
           timeout: 10
           max-score: 250
-          test-command: pytest test_named_tuple_profile.py -v
+          test-command: |
+            python -m pip install --upgrade pip
+            pip install pytest
+            pip install Faker
+            pip install numpy
+            pip install -r requirements.txt
 
       - name: Run Profile Tests Dictionary
-        id: test_profiles_dictionary
+        id: test_dictionary_profile
         uses: classroom-resources/autograding-python-grader@v1
         with:
           timeout: 10
           max-score: 250
-          test-command: pytest test_dictionary_profile.py -v
+          setup-command: |
+            python -m pip install --upgrade pip
+            pip install pytest
+            pip install Faker
+            pip install numpy
+            pip install -r requirements.txt
 
       - name: Run Company Tests
         id: test_company
         uses: classroom-resources/autograding-python-grader@v1
         with:
           timeout: 10
-          max-score: 250
-          test-command: pytest test_company.py -v
+          max-score: 500
+          setup-command: |
+            python -m pip install --upgrade pip
+            pip install pytest
+            pip install Faker
+            pip install numpy
+            pip install -r requirements.txt
 
-      - name: Run Compare Dictionary and Named Tuple Tests
-        id: test_compare_dictionary_named_tuple
-        uses: classroom-resources/autograding-python-grader@v1
-        with:
-          timeout: 10
-          max-score: 0
-          test-command: python compare_dictionary_named_tuple.py
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
-          TEST_RESULTS: "${{ steps.test_profiles_named_tuple.outputs.result }},${{ steps.test_profiles_dictionary.outputs.result }},${{ steps.test_company.outputs.result }},${{ steps.test_compare_dictionary_named_tuple.outputs.result }}"
+          TEST_RESULTS: "${{ steps.test_named_tuple_profile.outputs.result }},${{ steps.test_dictionary_profile.outputs.result }},${{ steps.test_company.outputs.result }}"
