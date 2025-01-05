@@ -769,7 +769,6 @@ def test_single_profile(sample_profiles):
     """
     single_profile = [sample_profiles[0]]
     assert get_largest_blood_type(single_profile) == {"A+"}
-    print(get_mean_current_location(single_profile))
     assert get_mean_current_location(single_profile) == (
         Decimal("40.7128"),
         Decimal("-74.0060"),
