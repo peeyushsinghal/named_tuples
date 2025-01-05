@@ -22,6 +22,7 @@ jobs:
         id: test_session8
         uses: classroom-resources/autograding-python-grader@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           timeout: 10
           max-score: 1000
           setup-command: |
@@ -38,5 +39,15 @@ jobs:
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
         env:
           TEST_SESSION8_RESULTS: "${{ env.TEST_SESSION8_RESULTS }}"
+
+      - name: Report Results
+        uses: classroom-resources/autograding-grading-reporter@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          runners: "ubuntu-latest"    # Add this line with comma-separated runners
+        env:
+          TEST_SESSION8_RESULTS: ${{ env.TEST_SESSION8_RESULTS }}
