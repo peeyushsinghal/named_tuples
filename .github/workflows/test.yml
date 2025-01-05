@@ -1,33 +1,31 @@
-name: Run Tests
-
-on: [push, pull_request]
-
+name: Autograding Tests
+'on':
+  - push
+  - repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
 jobs:
-  test:
+  run-autograding-tests:
     runs-on: ubuntu-latest
-
+    if: github.actor != 'github-classroom[bot]'
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.8'
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          pip install -r requirements.txt
-          pip install Faker
-          pip install numpy
-
-      - name: Run tests with autograding
+      - name: test_company
+        id: test_company
         uses: classroom-resources/autograding-python-grader@v1
         with:
+          timeout: 10
+          max-score: 500
           setup-command: |
-            pytest test_company.py -v:500
-            pytest test_dictironary_profile.py -v:250
-            pytest test_named_tuple_profile.py -v:250
-          max-score: 1000  # Total possible score
+            pip install pytest
+            pip install Faker
+            pip install -r requirements.txt
+
+      - name: Autograding Reporter
+        uses: classroom-resources/autograding-grading-reporter@v1
+        env:
+          TEST_COMPANY_RESULTS: "${{ steps.test_company.outputs.result }}"
