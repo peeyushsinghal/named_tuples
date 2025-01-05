@@ -25,11 +25,14 @@ jobs:
             pip install Faker
             pip install -r requirements.txt
       
-      - name: Decode Results
-        id: decode_results
-        run: echo "RESULTS=$(echo '${{ steps.test_session8.outputs.result }}' | base64 --decode)" >> $GITHUB_ENV
+      - name: Decode and Format Results
+        id: format_results
+        run: |
+          RESULTS=$(echo '${{ steps.test_session8.outputs.result }}' | base64 --decode)
+          TEST_NAMES=$(echo $RESULTS | jq -r '.tests[].name' | paste -sd "," -)
+          echo "TEST_SESSION8_RESULTS=$TEST_NAMES" >> $GITHUB_ENV
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
-          TEST_SESSION8_RESULTS: "${{ env.RESULTS }}"
+          TEST_SESSION8_RESULTS: "${{ env.TEST_SESSION8_RESULTS }}"
