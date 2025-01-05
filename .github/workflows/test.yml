@@ -41,6 +41,7 @@ jobs:
         uses: classroom-resources/autograding-grading-reporter@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          runners: test_session8
         env:
           TEST_SESSION8_RESULTS: "${{ env.TEST_SESSION8_RESULTS }}"
 
@@ -48,6 +49,7 @@ jobs:
         uses: classroom-resources/autograding-grading-reporter@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          runners: "ubuntu-latest"    # Add this line with comma-separated runners
+          runners: test_session8
         env:
           TEST_SESSION8_RESULTS: ${{ env.TEST_SESSION8_RESULTS }}
+    
