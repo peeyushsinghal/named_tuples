@@ -65,7 +65,4 @@ jobs:
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
         env:
-          TEST_PROFILES_NAMED_TUPLE_RESULTS: "${{ steps.test_profiles_named_tuple.outputs.result }}"
-          TEST_PROFILES_DICTIONARY_RESULTS: "${{ steps.test_profiles_dictionary.outputs.result }}"
-          TEST_COMPANY_RESULTS: "${{ steps.test_company.outputs.result }}"
-          TEST_COMPARE_RESULTS: "${{ steps.test_compare_dictionary_named_tuple.outputs.result }}"
+          TEST_RESULTS: "${{ steps.test_profiles_named_tuple.outputs.result }},${{ steps.test_profiles_dictionary.outputs.result }},${{ steps.test_company.outputs.result }},${{ steps.test_compare_dictionary_named_tuple.outputs.result }}"
