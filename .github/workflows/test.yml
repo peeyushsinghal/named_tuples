@@ -25,12 +25,12 @@ jobs:
             pip install Faker
             pip install -r requirements.txt
       
-      - name: Decode and Format Results
-        id: format_results
+      - name: Decode and Calculate Total Score
+        id: calculate_total_score
         run: |
           RESULTS=$(echo '${{ steps.test_session8.outputs.result }}' | base64 --decode)
-          TEST_NAMES=$(echo $RESULTS | jq -r '.tests[].name' | paste -sd "," -)
-          echo "TEST_SESSION8_RESULTS=$TEST_NAMES" >> $GITHUB_ENV
+          TOTAL_SCORE=$(echo $RESULTS | jq -r '[.tests[].score] | add')
+          echo "TEST_SESSION8_RESULTS=$TOTAL_SCORE" >> $GITHUB_ENV
 
       - name: Autograding Reporter
         uses: classroom-resources/autograding-grading-reporter@v1
